@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <context:component-scan base-package="com.wjs" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 配置velocity引擎 -->
+    <bean id="velocityConfigurer"
+          class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <!-- 模板存放的路径 -->
+        <property name="resourceLoaderPath">
+            <value>/WEB-INF/views</value>
+        </property>
+        <!--<property name="velocityProperties">
+            <props>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+                <prop key="contentType">text/html;charset=UTF-8</prop>
+                &lt;!&ndash;<prop key="velocimacro.library">macro/macros.vm</prop>&ndash;&gt;
+            </props>
+        </property>-->
+        <property name="configLocation" value="classpath:/velocity.properties"/>
+    </bean>
+
+    <!-- 配置视图的显示 -->
+    <bean id="ViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+        <!--<property name="prefix" value="/view/" />--><!-- 视图文件的前缀，即存放的路径 -->
+        <property name="suffix" value=".vm" /><!-- 视图文件的后缀名 -->
+        <!--<property name="toolboxConfigLocation" value="/WEB-INF/tools.xml" />toolbox配置文件路径-->
+        <property name="dateToolAttribute" value="date" /><!--日期函数名称-->
+        <property name="numberToolAttribute" value="number" /><!--数字函数名称-->
+        <property name="contentType" value="text/html;charset=UTF-8" />
+        <property name="exposeSpringMacroHelpers" value="true" /><!--是否使用spring对宏定义的支持-->
+        <property name="exposeRequestAttributes" value="true" /><!--是否开放request属性-->
+        <property name="requestContextAttribute" value="rc"/><!--request属性引用名称-->
+        <!--<property name="layoutUrl" value="layout/default.vm"/>指定layout文件-->
+    </bean>
+
+    <!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
+
+   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+       <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+       <property name="prefix" value="/"/>
+        <property name="suffix" value=".jsp" />
+    </bean>
+</beans>
